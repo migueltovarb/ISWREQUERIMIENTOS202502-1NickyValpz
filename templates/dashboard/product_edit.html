@@ -1,0 +1,68 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Editar producto - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Editar producto{% endblock %}
+
+{% block content %}
+
+<h2>Editar: {{ product.name }}</h2>
+
+<div class="form-container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="name" value="{{ product.name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Descripción</label>
+            <textarea name="description" rows="3">{{ product.description }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Precio</label>
+            <input type="number" step="0.01" name="price" value="{{ product.price }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Categoría</label>
+            <select name="category" required>
+                {% for c in categories %}
+                    <option value="{{ c.id }}" {% if c.id == product.category.id %}selected{% endif %}>
+                        {{ c.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" name="available" {% if product.available %}checked{% endif %}>
+                Disponible en el menú
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>Imagen actual</label><br>
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px; border-radius: 10px;">
+            {% else %}
+                <p>No hay imagen cargada.</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>Reemplazar imagen (opcional)</label>
+            <input type="file" name="image">
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

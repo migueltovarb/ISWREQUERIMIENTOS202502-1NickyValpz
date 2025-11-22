@@ -1,0 +1,21 @@
+{% extends 'menu/base_menu.html' %}
+{% block title %}Historial de pedidos{% endblock %}
+{% block content %}
+<div style="max-width:600px;margin:2rem auto;background:#fff;padding:2rem;border-radius:8px;">
+    <h2 style="color:#8b6f47;text-align:center;">Tus pedidos recientes</h2>
+    <ul style="list-style:none;padding-left:0;">
+        {% for p in pedidos %}
+            <li style="background:#f8f5f0;padding:1rem 1.5rem;margin:0.7rem 0;border-radius:6px;">
+                <b>Código:</b> <span style="color:#8b6f47">{{ p.tracking_code }}</span>
+                <br>
+                <b>Es                          <span style="color:{% if p.status == 'ENTREGADO' %}#2e7d32{% else %}#a07d51{% endif %};">{{ p.status }}</span>
+
+                <br>
+                <a href="{% url 'tracking_view' tracking_code=p.tracking_code %}">Ver pedido</a>
+            </li>
+        {% empty %}
+            <li style="color:#b17535;">No tienes pedidos recientes.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

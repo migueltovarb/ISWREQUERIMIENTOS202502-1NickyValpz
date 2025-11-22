@@ -1,0 +1,31 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Crear barista - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Nuevo barista{% endblock %}
+
+{% block content %}
+
+<h2>Registrar barista</h2>
+
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Nombre de usuario</label>
+            <input type="text" name="usuario" required>
+        </div>
+
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">Crear barista</button>
+            <a href="{% url 'barista_list' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

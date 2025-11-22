@@ -1,0 +1,77 @@
+{% extends 'menu/base_menu.html' %}
+
+{% block title %}Menú - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Niky's Coffee Hub{% endblock %}
+
+{% block content %}
+
+<!-- Hero principal -->
+<div style="
+    background: linear-gradient(120deg, #C4A574 0%, #F5E6D3 40%, #ffffff 100%);
+    border-radius: 20px;
+    padding: 3rem;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+">
+    <div style="flex: 1 1 260px;">
+        <h1 style="margin-bottom: 1rem;">Niky's Coffee Hub</h1>
+        <p style="max-width: 480px;">
+            Relájate, el café lo ponemos nosotros. Explora nuestro menú,
+            arma tu bandeja y pasa por tu pedido cuando esté listo.
+        </p>
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="#productos" class="btn btn-primary btn-large">Ver productos</a>
+            <a href="{% url 'bandeja' %}" class="btn btn-secondary btn-large">Ver mi bandeja</a>
+        </div>
+    </div>
+    <div style="
+        flex: 1 1 260px;
+        min-height: 220px;
+        border-radius: 20px;
+        background: url('https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=800')
+                    center/cover no-repeat;
+    ">
+    </div>
+</div>
+
+<!-- Categorías -->
+<h2>Categorías</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2.5rem;">
+    {% for c in categories %}
+        <a href="{% url 'menu_category' c.id %}" class="btn btn-secondary btn-small">
+            {{ c.name }}
+        </a>
+    {% empty %}
+        <p>No hay categorías registradas.</p>
+    {% endfor %}
+</div>
+
+<!-- Productos -->
+<h2 id="productos">Nuestros productos</h2>
+
+<div class="product-grid">
+    {% for p in products %}
+        <div class="product-card">
+            {% if p.image %}
+                <img src="{{ p.image.url }}" alt="{{ p.name }}" class="product-image">
+            {% else %}
+                <div class="product-image"></div>
+            {% endif %}
+            <div class="product-info">
+                <div class="product-name">{{ p.name }}</div>
+                <div class="product-price">${{ p.price }}</div>
+                <p style="margin: 0.5rem 0 1rem 0;">{{ p.description|default:"Deliciosa preparación de la casa." }}</p>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <a href="{% url 'menu_product_detail' p.id %}" class="btn btn-secondary btn-small">Ver detalle</a>
+                    <a href="{% url 'agregar_a_bandeja' p.id %}" class="btn btn-primary btn-small">Agregar a bandeja</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No hay productos disponibles todavía.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

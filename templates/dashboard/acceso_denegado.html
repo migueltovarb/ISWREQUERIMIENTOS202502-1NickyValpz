@@ -1,0 +1,18 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Acceso denegado - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Acceso denegado{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+    <h2>Acceso denegado</h2>
+    <p>No tienes permisos para ver esta sección.</p>
+    <p>Si crees que esto es un error, contacta al administrador.</p>
+
+    <div style="margin-top: 1.5rem;">
+        <a href="{% url 'pedidos_list' %}" class="btn btn-primary">Ir a pedidos</a>
+    </div>
+</div>
+
+{% endblock %}

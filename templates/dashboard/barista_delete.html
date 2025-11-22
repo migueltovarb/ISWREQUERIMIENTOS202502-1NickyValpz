@@ -1,0 +1,24 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Eliminar barista - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Eliminar barista{% endblock %}
+
+{% block content %}
+
+<h2>¿Confirmar eliminación?</h2>
+
+<div class="form-container">
+    <p>¿Estás seguro de que deseas eliminar al barista <strong>{{ barista.username }}</strong>?</p>
+    <p style="color: #d32f2f; margin-top: 1rem;">Esta acción no se puede deshacer.</p>
+
+    <form method="post" style="margin-top: 2rem;">
+        {% csrf_token %}
+        
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+            <a href="{% url 'barista_list' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

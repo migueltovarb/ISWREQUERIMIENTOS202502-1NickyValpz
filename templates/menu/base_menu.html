@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Niky's Coffee Hub{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo-area">
+        <div class="logo">☕</div>
+        <div class="logo-text">Niky's Coffee Hub</div>
+    </div>
+
+    <ul class="nav-menu">
+        <li>
+            <a href="{% url 'menu_home' %}" class="{% if request.resolver_match.url_name == 'menu_home' %}active{% endif %}">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'bandeja' %}" class="{% if request.resolver_match.url_name == 'bandeja' %}active{% endif %}">
+                Mi bandeja
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'historial_pedidos' %}" class="{% if request.resolver_match.url_name == 'historial_pedidos' %}active{% endif %}">
+                Historial
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'dashboard_home' %}">
+                Zona staff
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="header-bar">
+        <div>
+            <h2>{% block header_title %}Bienvenido a Niky's Coffee Hub{% endblock %}</h2>
+            <p>Elige tu bebida favorita y nosotros la preparamos.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        {% if messages %}
+            {% for m in messages %}
+                <div class="alert alert-{{ m.tags|default:'info' }}">
+                    {{ m }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+</body>
+</html>

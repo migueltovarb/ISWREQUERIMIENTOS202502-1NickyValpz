@@ -1,0 +1,25 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Confirmar entrega - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Confirmar entrega{% endblock %}
+
+{% block content %}
+
+<h2>¿Confirmar entrega del pedido #{{ order.id }}?</h2>
+
+<div class="form-container">
+    <p>Cliente: <b>{{ order.customer_name }} {{ order.customer_lastname }}</b></p>
+    <p>Método de pago: {{ order.get_payment_method_display }}</p>
+
+    <form method="post" style="margin-top: 1.5rem;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">
+            Sí, ya fue entregado y generar factura
+        </button>
+        <a href="{% url 'pedido_detalle' order.id %}" class="btn btn-secondary" style="margin-left: 0.5rem;">
+            Cancelar
+        </a>
+    </form>
+</div>
+
+{% endblock %}

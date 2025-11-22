@@ -1,0 +1,55 @@
+{% extends 'menu/base_menu.html' %}
+
+{% block title %}Seguimiento del pedido - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Seguimiento de tu pedido{% endblock %}
+
+{% block content %}
+
+{% if order.status == "DELIVERED" %}
+<script>
+    // Redirigir al home luego de 5 segundos cuando ya está entregado
+    setTimeout(function() {
+        window.location.href = "{% url 'menu_home' %}";
+    }, 5000);
+</script>
+{% endif %}
+
+<h2>Estado de tu pedido</h2>
+
+<div class="form-container" style="max-width: 700px; margin: 0 auto;">
+    <p><b>Código de seguimiento:</b> {{ order.tracking_code }}</p>
+    <p><b>Fecha:</b> {{ order.created_at }}</p>
+    <p><b>Método de pago:</b> {{ order.get_payment_method_display }}</p>
+
+    {% if order.status == "DELIVERED" %}
+        <h3 style="color: green; margin-top: 1.5rem;">Tu pedido ha sido entregado</h3>
+        <p>
+            Muchas gracias por confiar en <b>Niky's Coffee Hub</b>.  
+            Esperamos que disfrutes cada sorbo de tu bebida.
+        </p>
+        <p>Serás redirigido al menú principal en unos segundos…</p>
+        <a href="{% url 'menu_home' %}" class="btn btn-primary" style="margin-top: 1rem;">
+            Volver al menú ahora
+        </a>
+    {% else %}
+        <p style="margin-top: 1rem;">
+            <b>Estado actual:</b>
+            {% if order.status == "PENDING" %}
+                <span class="badge badge-pending">Pendiente</span>
+            {% elif order.status == "PREPARING" %}
+                <span class="badge badge-preparing">En preparación</span>
+            {% elif order.status == "READY" %}
+                <span class="badge badge-ready">Listo para recoger</span>
+            {% endif %}
+        </p>
+
+        <h3 style="margin-top: 2rem;">Productos</h3>
+        <ul>
+            {% for item in order.items.all %}
+                <li>{{ item.quantity }} × {{ item.product.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+{% endblock %}

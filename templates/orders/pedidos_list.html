@@ -1,0 +1,56 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Pedidos (orders app) - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Listado de pedidos (orders){% endblock %}
+
+{% block content %}
+
+<h2>Pedidos</h2>
+
+<div class="table-container">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Método de pago</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.customer_name }} {{ order.customer_lastname }}</td>
+                <td>{{ order.get_payment_method_display }}</td>
+                <td>
+                    {% if order.status == "PENDING" %}
+                        <span class="badge badge-pending">Pendiente</span>
+                    {% elif order.status == "PREPARING" %}
+                        <span class="badge badge-preparing">En preparación</span>
+                    {% elif order.status == "READY" %}
+                        <span class="badge badge-ready">Listo</span>
+                    {% elif order.status == "DELIVERED" %}
+                        <span class="badge badge-delivered">Entregado</span>
+                    {% endif %}
+                </td>
+                <td>{{ order.created_at }}</td>
+                <td>
+                    <a href="{% url 'orders_pedido_detalle' order.id %}"
+                       class="btn btn-secondary btn-small">
+                        Ver detalle
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">No hay pedidos registrados.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

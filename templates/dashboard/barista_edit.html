@@ -1,0 +1,26 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block title %}Editar barista{% endblock %}
+{% block header_title %}Editar barista{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Nombre de usuario</label>
+            <input type="text" name="username" value="{{ barista.username }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Nueva contraseña (opcional)</label>
+            <input type="password" name="password" placeholder="Dejar vacío para no cambiar">
+        </div>
+
+        <button class="btn btn-primary btn-large">Guardar cambios</button>
+        <a href="{% url 'barista_list' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+
+{% endblock %}

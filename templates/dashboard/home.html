@@ -1,0 +1,109 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Inicio - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Resumen general{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-section">
+    <h2>Actividad del café</h2>
+    <p>Gráficos actualizados sobre pedidos del sistema.</p>
+</div>
+
+<!-- Grid para las gráficas -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+
+    <!-- Pie Chart -->
+    <div class="card" style="padding: 2rem; background: white; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+        <h3 style="margin-bottom: 1rem;">Estados de pedidos</h3>
+        <canvas id="statusChart" height="200"></canvas>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="card" style="padding: 2rem; background: white; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+        <h3 style="margin-bottom: 1rem;">Pedidos por día</h3>
+        <canvas id="dailyChart" height="200"></canvas>
+    </div>
+
+</div>
+
+
+<!-- SCRIPT: Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    /* =====================================
+       Obtener datos desde Django (SEGURO)
+    ====================================== */
+
+    const statusLabels = JSON.parse('{{ status_labels|safe|escapejs }}');
+    const statusData = JSON.parse('{{ status_data|safe|escapejs }}');
+
+    const dailyLabels = JSON.parse('{{ daily_labels|safe|escapejs }}');
+    const dailyData = JSON.parse('{{ daily_data|safe|escapejs }}');
+
+
+    /* ============================
+       PIE CHART – ESTADOS
+    ============================ */
+
+    const ctxPie = document.getElementById('statusChart').getContext('2d');
+
+    new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: statusLabels,
+            datasets: [{
+                data: statusData,
+                backgroundColor: [
+                    '#6B4423',  // café
+                    '#C4A574',  // latte
+                    '#F5E6D3',  // crema
+                    '#FF9800',  // pendiente
+                    '#4CAF50',  // listo
+                    '#2196F3',  // preparando
+                ],
+                borderWidth: 2,
+                borderColor: "#fff"
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+
+
+    /* ============================
+       BAR CHART – HISTÓRICO DÍA
+    ============================ */
+
+    const ctxBar = document.getElementById('dailyChart').getContext('2d');
+
+    new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: dailyLabels,
+            datasets: [{
+                label: 'Pedidos por día',
+                data: dailyData,
+                backgroundColor: '#6B4423cc',
+                borderColor: '#6B4423',
+                borderWidth: 3,
+                borderRadius: 8,
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+</script>
+
+{% endblock %}

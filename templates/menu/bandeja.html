@@ -1,0 +1,56 @@
+{% extends 'menu/base_menu.html' %}
+
+{% block title %}Mi bandeja - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Mi bandeja{% endblock %}
+
+{% block content %}
+
+<h2>Tu selección de hoy</h2>
+
+<div style="margin-bottom: 1rem;">
+    <a href="{% url 'menu_home' %}" class="btn btn-secondary btn-small">Seguir explorando</a>
+    <a href="{% url 'vaciar_bandeja' %}" class="btn btn-danger btn-small">Vaciar bandeja</a>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.subtotal }}</td>
+                <td>
+                    <a href="{% url 'eliminar_de_bandeja' item.product.id %}" class="btn btn-danger btn-small">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4">No tienes productos en la bandeja.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+    <h3>Total: ${{ total }}</h3>
+
+    {% if items %}
+        <a href="{% url 'realizar_pedido' %}" class="btn btn-primary btn-large">
+            Confirmar pedido
+        </a>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Pedidos - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Gestión de pedidos{% endblock %}
+
+{% block content %}
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <h2>Pedidos</h2>
+
+    <form method="get">
+        <label>Filtrar por estado:</label>
+        <select name="status" onchange="this.form.submit()">
+            <option value="">Todos</option>
+            <option value="PENDING" {% if status_filter == "PENDING" %}selected{% endif %}>Pendiente</option>
+            <option value="PREPARING" {% if status_filter == "PREPARING" %}selected{% endif %}>En preparación</option>
+            <option value="READY" {% if status_filter == "READY" %}selected{% endif %}>Listo</option>
+            <option value="DELIVERED" {% if status_filter == "DELIVERED" %}selected{% endif %}>Entregado</option>
+        </select>
+    </form>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Método de pago</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for pedido in pedidos %}
+            <tr>
+                <td>#{{ pedido.id }}</td>
+                <td>{{ pedido.customer_name }} {{ pedido.customer_lastname }}</td>
+                <td>{{ pedido.get_payment_method_display }}</td>
+                <td>
+                    {% if pedido.status == "PENDING" %}
+                        <span class="badge badge-pending">Pendiente</span>
+                    {% elif pedido.status == "PREPARING" %}
+                        <span class="badge badge-preparing">En preparación</span>
+                    {% elif pedido.status == "READY" %}
+                        <span class="badge badge-ready">Listo</span>
+                    {% elif pedido.status == "DELIVERED" %}
+                        <span class="badge badge-delivered">Entregado</span>
+                    {% endif %}
+                </td>
+                <td>{{ pedido.created_at }}</td>
+                <td>
+                    <a href="{% url 'pedido_detalle' pedido.id %}" class="btn btn-secondary btn-small">
+                        Ver detalle
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">No hay pedidos registrados.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

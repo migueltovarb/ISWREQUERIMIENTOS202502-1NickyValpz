@@ -1,0 +1,46 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Productos - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Gestión de productos{% endblock %}
+
+{% block content %}
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <h2>Productos del menú</h2>
+    <a href="{% url 'product_create' %}" class="btn btn-primary">+ Nuevo producto</a>
+</div>
+
+<div class="product-grid">
+    {% for p in products %}
+        <div class="product-card">
+            {% if p.image %}
+                <img src="{{ p.image.url }}" alt="{{ p.name }}" class="product-image">
+            {% else %}
+                <div class="product-image"></div>
+            {% endif %}
+            <div class="product-info">
+                <div class="product-name">{{ p.name }}</div>
+                <div class="product-price">${{ p.price|floatformat:2 }}</div>
+                <p style="margin: 0.5rem 0 1rem 0;">{{ p.description|default:"Sin descripción." }}</p>
+                <p>
+                    {% if p.available %}
+                        <span class="badge badge-ready">Disponible</span>
+                    {% else %}
+                        <span class="badge badge-delivered">No disponible</span>
+                    {% endif %}
+                    <span style="margin-left: 0.5rem; font-size: 0.9rem; color: #666;">
+                        {{ p.category.name }}
+                    </span>
+                </p>
+                <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                    <a href="{% url 'product_edit' p.id %}" class="btn btn-secondary btn-small">Editar</a>
+                    <a href="{% url 'product_delete' p.id %}" class="btn btn-danger btn-small">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No hay productos registrados.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

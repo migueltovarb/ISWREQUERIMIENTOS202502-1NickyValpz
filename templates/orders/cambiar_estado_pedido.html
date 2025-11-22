@@ -1,0 +1,18 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Estado actualizado - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Estado del pedido actualizado{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+    <p>El estado del pedido se ha actualizado correctamente.</p>
+
+    <div style="margin-top: 1.5rem;">
+        <a href="{% url 'orders_pedidos_list' %}" class="btn btn-primary">
+            Volver al listado de pedidos
+        </a>
+    </div>
+</div>
+
+{% endblock %}

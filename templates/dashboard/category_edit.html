@@ -1,0 +1,20 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Editar categoría - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Editar categoría{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="name" value="{{ category.name }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-large">Guardar cambios</button>
+        <a href="{% url 'category_list' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+
+{% endblock %}

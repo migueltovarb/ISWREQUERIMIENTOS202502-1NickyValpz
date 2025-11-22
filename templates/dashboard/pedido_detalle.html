@@ -1,0 +1,69 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Detalle del pedido - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Detalle de pedido{% endblock %}
+
+{% block content %}
+
+<h2>Pedido #{{ pedido.id }}</h2>
+
+<div class="form-container" style="margin-bottom: 2rem;">
+    <p><b>Cliente:</b> {{ pedido.customer_name }} {{ pedido.customer_lastname }}</p>
+    <p><b>Teléfono:</b> {{ pedido.customer_phone }}</p>
+    <p><b>Método de pago:</b> {{ pedido.get_payment_method_display }}</p>
+    <p><b>Código de seguimiento:</b> {{ pedido.tracking_code }}</p>
+    <p>
+        <b>Estado:</b>
+        {% if pedido.status == "PENDING" %}
+            <span class="badge badge-pending">Pendiente</span>
+        {% elif pedido.status == "PREPARING" %}
+            <span class="badge badge-preparing">En preparación</span>
+        {% elif pedido.status == "READY" %}
+            <span class="badge badge-ready">Listo</span>
+        {% elif pedido.status == "DELIVERED" %}
+            <span class="badge badge-delivered">Entregado</span>
+        {% endif %}
+    </p>
+</div>
+
+<h3>Productos</h3>
+<div class="table-container">
+    <table>
+        <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cant.</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in pedido.items.all %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3 style="margin-top: 2rem;">Cambiar estado</h3>
+<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    <a href="{% url 'cambiar_estado_pedido' pedido.id 'PENDING' %}" class="btn btn-warning btn-small">
+        Pendiente
+    </a>
+    <a href="{% url 'cambiar_estado_pedido' pedido.id 'PREPARING' %}" class="btn btn-info btn-small">
+        En preparación
+    </a>
+    <a href="{% url 'cambiar_estado_pedido' pedido.id 'READY' %}" class="btn btn-success btn-small">
+        Listo
+    </a>
+    <a href="{% url 'cambiar_estado_pedido' pedido.id 'DELIVERED' %}" class="btn btn-primary btn-small">
+        Entregado + Factura
+    </a>
+</div>
+
+<div style="margin-top: 1.5rem;">
+    <a href="{% url 'pedidos_list' %}" class="btn btn-secondary">Volver a pedidos</a>
+</div>
+
+{% endblock %}

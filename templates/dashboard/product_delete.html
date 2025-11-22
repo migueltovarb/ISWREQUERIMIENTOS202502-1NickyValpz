@@ -1,0 +1,22 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Eliminar producto - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Eliminar producto{% endblock %}
+
+{% block content %}
+
+<h2>¿Eliminar producto?</h2>
+
+<div class="form-container">
+    <p>Vas a eliminar el producto <b>{{ product.name }}</b>. Esta acción no se puede deshacer.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+            <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

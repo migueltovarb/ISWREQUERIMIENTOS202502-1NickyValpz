@@ -1,0 +1,80 @@
+{% extends 'menu/base_menu.html' %}
+
+{% block title %}Crear pedido - Niky's Coffee Hub{% endblock %}
+{% block header_title %}Crear pedido{% endblock %}
+
+{% block content %}
+
+<h2>Revisa tu pedido</h2>
+
+<div class="table-container" style="margin-bottom: 2rem;">
+    <table>
+        <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.subtotal }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3">No hay productos en el pedido.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3>Total: ${{ total }}</h3>
+
+<h2 style="margin-top: 3rem;">Datos del cliente</h2>
+
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="customer_name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" name="customer_lastname" required>
+        </div>
+
+        <div class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" name="customer_phone" required>
+        </div>
+
+        <div class="form-group">
+            <label>Método de pago</label>
+            <select name="payment_method" required>
+                <option value="">Selecciona...</option>
+                <option value="NEQUI">Nequi</option>
+                <option value="EFECTIVO">Efectivo</option>
+                <option value="TARJETA">Tarjeta</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Nota (opcional)</label>
+            <textarea name="note" rows="3" placeholder="Indicaciones especiales (azúcar, leche, etc.)"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary btn-large">Confirmar pedido</button>
+            <a href="{% url 'bandeja' %}" class="btn btn-secondary btn-large">Volver a bandeja</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Panel - Niky's Coffee Hub{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo-area">
+        <div class="logo">☕</div>
+        <div class="logo-text">Niky's Coffee Hub</div>
+    </div>
+
+    <ul class="nav-menu">
+        <li>
+            <a href="{% url 'dashboard_home' %}"
+               class="{% if request.resolver_match.url_name == 'dashboard_home' %}active{% endif %}">
+                Inicio
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'product_list' %}"
+               class="{% if request.resolver_match.url_name in 'product_list product_create product_edit product_delete' %}active{% endif %}">
+                Productos
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'category_list' %}"
+               class="{% if request.resolver_match.url_name in 'category_list category_create category_edit category_delete' %}active{% endif %}">
+                Categorías
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'barista_list' %}"
+               class="{% if request.resolver_match.url_name in 'barista_list barista_create barista_edit barista_delete' %}active{% endif %}">
+                Baristas
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'pedidos_list' %}"
+               class="{% if request.resolver_match.url_name in 'pedidos_list pedido_detalle' %}active{% endif %}">
+                Pedidos
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}">
+                Cerrar sesión
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="header-bar">
+        <div>
+            <h2>{% block header_title %}Panel administrativo{% endblock %}</h2>
+            <p>Gestión interna de Niky's Coffee Hub</p>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar">
+                {{ request.user.username|first|upper }}
+            </div>
+            <div>
+                <div>{{ request.user.username }}</div>
+                <small>{{ request.user.role }}</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        {% if messages %}
+            {% for m in messages %}
+                <div class="alert alert-{{ m.tags|default:'info' }}">
+                    {{ m }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+</body>
+</html>
